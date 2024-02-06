@@ -25,13 +25,13 @@ jobs:
           echo "Login exitoso"
       - name: Build
         run: |
-          docker build -t ${{ secrets.DOCKER_USER }}/enana:${{ github.sha }} .
+          docker build -t ${{ secrets.DOCKER_USER }}/2dawenana:${{ github.sha }} .
           echo "Imagen generada de histórico"
-          docker build -t ${{ secrets.DOCKER_USER }}/enana:latest .
+          docker build -t ${{ secrets.DOCKER_USER }}/2dawenana:latest .
           echo "Imagen generada de última versión"
       - name: Push
         run: |
-          docker push ${{ secrets.DOCKER_USER }}/enana:${{ github.sha }}
+          docker push ${{ secrets.DOCKER_USER }}/2dawenana:${{ github.sha }}
           echo "Histórico guardado"
-          docker push ${{ secrets.DOCKER_USER }}/enana:latest
+          docker push ${{ secrets.DOCKER_USER }}/2dawenana:latest
           echo "Última versión subida"
