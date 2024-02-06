@@ -1,7 +1,7 @@
 <?php
 
 use PHPUnit\Framework\TestCase;
-///
+////
 include './src/Enana.php';
 
 class EnanaTest extends TestCase
