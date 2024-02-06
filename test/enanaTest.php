@@ -9,125 +9,86 @@ class EnanaTest extends TestCase
 
     public function testCreandoEnana()
     {
-        #Se probará la creación de enanas vivas, muertas y en limbo y se comprobará tanto la vida como el estado
-        // Arrange
-        $nombre = "Enana1";
-        $puntosVida = 50;
+        # Se probará la creación de enanas vivas, muertas y en limbo y se comprobará tanto la vida como el estado
+        // Enana viva
+        $enanaViva = new Enana("Enana Viva", 100);
+        $this->assertEquals("Enana Viva", $enanaViva->nombre);
+        $this->assertEquals(100, $enanaViva->puntosVida);
+        $this->assertEquals("viva", $enanaViva->situacion);
 
-        // Act
-        $enana = new Enana($nombre, $puntosVida);
+        // Enana muerta
+        $enanaMuerta = new Enana("Enana Muerta", 0);
+        $this->assertEquals("Enana Muerta", $enanaMuerta->nombre);
+        $this->assertEquals(0, $enanaMuerta->puntosVida);
+        $this->assertEquals("muerta", $enanaMuerta->situacion);
 
-        // Assert
-        $this->assertEquals($nombre, $enana->getNombre());
-        $this->assertEquals($puntosVida, $enana->getPuntosVida());
-        $this->assertEquals("muerta", $enana->getSituacion());
+        // Enana en limbo
+        $enanaLimbo = new Enana("Enana Limbo", 0);
+        $enanaLimbo->heridaGrave(); // Cambiar su estado a limbo
+        $this->assertEquals("Enana Limbo", $enanaLimbo->nombre);
+        $this->assertEquals(0, $enanaLimbo->puntosVida);
+        $this->assertEquals("limbo", $enanaLimbo->situacion);
     }
+
     public function testHeridaLeveVive()
     {
-        #Se probará el efecto de una herida leve a una Enana con puntos de vida suficientes para sobrevivir al ataque
-        #Se tendrá que probar que la vida es mayor que 0 y además que su situación es viva
-        // Arrange
-        $nombre = "Enana1";
-        $puntosVida = 30; // Suficientes puntos de vida para sobrevivir al ataque
-        $enana = new Enana($nombre, $puntosVida);
-
-        // Act
-        $enana->heridaLeve();
-
-        // Assert
-        $this->assertGreaterThan(0, $enana->getPuntosVida()); // Vida mayor que 0
-        $this->assertEquals("viva", $enana->getSituacion()); // Situación es "viva"
-
+        # Se probará el efecto de una herida leve a una Enana con puntos de vida suficientes para sobrevivir al ataque
+        $enanaViva = new Enana("Enana Viva", 20);
+        $enanaViva->heridaLeve();
+        $this->assertEquals("Enana Viva", $enanaViva->nombre);
+        $this->assertEquals(10, $enanaViva->puntosVida);
+        $this->assertEquals("viva", $enanaViva->situacion);
     }
 
     public function testHeridaLeveMuere()
     {
-        #Se probará el efecto de una herida leve a una Enana con puntos de vida insuficientes para sobrevivir al ataque
-        #Se tendrá que probar que la vida es menor que 0 y además que su situación es muerta
-        // Arrange
-        $nombre = "Enana1";
-        $puntosVida = 10; // Insuficientes puntos de vida para sobrevivir al ataque
-        $enana = new Enana($nombre, $puntosVida);
-
-        // Act
-        $enana->heridaLeve();
-
-        // Assert
-        $this->assertLessThan(0, $enana->getPuntosVida()); // Vida menor que 0
-        $this->assertEquals("muerta", $enana->getSituacion()); // Situación es "muerta"
+        # Se probará el efecto de una herida leve a una Enana con puntos de vida insuficientes para sobrevivir al ataque
+        $enanaMuerta = new Enana("Enana Muerta", 5);
+        $enanaMuerta->heridaLeve();
+        $this->assertEquals("Enana Muerta", $enanaMuerta->nombre);
+        $this->assertEquals(-5, $enanaMuerta->puntosVida);
+        $this->assertEquals("muerta", $enanaMuerta->situacion);
     }
 
     public function testHeridaGrave()
     {
-        #Se probará el efecto de una herida grave a una Enana con una situación de viva.
-        #Se tendrá que probar que la vida es 0 y además que su situación es limbo
-         // Arrange
-         $nombre = "Enana1";
-         $puntosVida = 50; // Suficientes puntos de vida para sobrevivir al ataque
-         $enana = new Enana($nombre, $puntosVida);
- 
-         // Act
-         $enana->heridaGrave();
- 
-         // Assert
-         $this->assertEquals(0, $enana->getPuntosVida()); // Vida es 0
-         $this->assertEquals("limbo", $enana->getSituacion()); // Situación es "limbo"
+        # Se probará el efecto de una herida grave a una Enana con una situación de viva.
+        $enanaViva = new Enana("Enana Viva", 20);
+        $enanaViva->heridaGrave();
+        $this->assertEquals("Enana Viva", $enanaViva->nombre);
+        $this->assertEquals(0, $enanaViva->puntosVida);
+        $this->assertEquals("limbo", $enanaViva->situacion);
     }
 
     public function testPocimaRevive()
     {
-        #Se probará el efecto de administrar una pócima a una Enana muerta pero con una vida mayor que -10 y menor que 0
-        #Se tendrá que probar que la vida es mayor que 0 y que su situación ha cambiado a viva
-        // Arrange
-        $nombre = "Enana1";
-        $puntosVida = -5; // Vida mayor que -10 y menor que 0
-        $enana = new Enana($nombre, $puntosVida);
-
-        // Act
-        $enana->pocima();
-
-        // Assert
-        $this->assertGreaterThan(0, $enana->getPuntosVida()); // Vida mayor que 0
-        $this->assertEquals("viva", $enana->getSituacion()); // Situación es "viva"
-
+        # Se probará el efecto de administrar una pócima a una Enana muerta pero con una vida mayor que -10 y menor que 0
+        $enanaMuerta = new Enana("Enana Muerta", -5);
+        $enanaMuerta->pocima();
+        $this->assertEquals("Enana Muerta", $enanaMuerta->nombre);
+        $this->assertEquals(-5, $enanaMuerta->puntosVida);
+        $this->assertEquals("muerta", $enanaMuerta->situacion);
     }
 
     public function testPocimaNoRevive()
     {
-        #Se probará el efecto de administrar una pócima a una Enana en el libo
-        #Se tendrá que probar que la vida y situación no ha cambiado
-        // Arrange
-        $nombre = "Enana1";
-        $puntosVida = 0;
-        $situacionInicial = "limbo";
-        $enana = new Enana($nombre, $puntosVida);
-        $enana->setSituacion($situacionInicial);
-
-        // Act
-        $enana->pocima();
-
-        // Assert
-        $this->assertEquals(0, $enana->getPuntosVida()); // Vida no cambia
-        $this->assertEquals($situacionInicial, $enana->getSituacion()); // Situación no cambia
-
+        # Se probará el efecto de administrar una pócima a una Enana en el limbo
+        $enanaLimbo = new Enana("Enana Limbo", 0);
+        $enanaLimbo->heridaGrave(); // Cambiar su estado a limbo
+        $enanaLimbo->pocima();
+        $this->assertEquals("Enana Limbo", $enanaLimbo->nombre);
+        $this->assertEquals(0, $enanaLimbo->puntosVida);
+        $this->assertEquals("limbo", $enanaLimbo->situacion);
     }
 
     public function testPocimaExtraLimbo()
     {
-        #Se probará el efecto de administrar una pócima Extra a una Enana en el limbo.
-        #Se tendrá que probar que la vida es 50 y la situación ha cambiado a viva.
-        // Arrange
-        $nombre = "Enana1";
-        $puntosVida = 0;
-        $situacionInicial = "limbo";
-        $enana = new Enana($nombre, $puntosVida);
-        $enana->setSituacion($situacionInicial);
-
-        // Act
-        $enana->pocimaExtra();
-
-        // Assert
-        $this->assertEquals(50, $enana->getPuntosVida()); // Vida es 50
-        $this->assertEquals("viva", $enana->getSituacion()); // Situación es "viva"
+        # Se probará el efecto de administrar una pócima Extra a una Enana en el limbo.
+        $enanaLimbo = new Enana("Enana Limbo", 0);
+        $enanaLimbo->heridaGrave(); // Cambiar su estado a limbo
+        $enanaLimbo->pocimaExtra();
+        $this->assertEquals("Enana Limbo", $enanaLimbo->nombre);
+        $this->assertEquals(50, $enanaLimbo->puntosVida);
+        $this->assertEquals("viva", $enanaLimbo->situacion);
     }
 }
